@@ -1,52 +1,23 @@
 import { createReducer, createActions } from 'reduxsauce'
 import Immutable from 'seamless-immutable'
 
-/* ------------- Types and Action Creators ------------- */
-
 const { Types, Creators } = createActions({
-  formRequest: ['data'],
-  formSuccess: ['payload'],
-  formFailure: null
+  saveDataPasien: ['data']
 })
 
 export const FormTypes = Types
 export default Creators
 
-/* ------------- Initial State ------------- */
-
 export const INITIAL_STATE = Immutable({
-  data: null,
+  pasien: [],
   fetching: null,
   payload: null,
   error: null
 })
 
-/* ------------- Selectors ------------- */
-
-export const FormSelectors = {
-  getData: state => state.data
-}
-
-/* ------------- Reducers ------------- */
-
-// request the data from an api
-export const request = (state, { data }) =>
-  state.merge({ fetching: true, data, payload: null })
-
-// successful api lookup
-export const success = (state, action) => {
-  const { payload } = action
-  return state.merge({ fetching: false, error: null, payload })
-}
-
-// Something went wrong somewhere.
-export const failure = state =>
-  state.merge({ fetching: false, error: true, payload: null })
-
-/* ------------- Hookup Reducers To Types ------------- */
+export const saveDataPasien = (state, { data }) =>
+  state.merge({ ...state, pasien: [ ...state.pasien, data ] })
 
 export const reducer = createReducer(INITIAL_STATE, {
-  [Types.FORM_REQUEST]: request,
-  [Types.FORM_SUCCESS]: success,
-  [Types.FORM_FAILURE]: failure
+  [Types.SAVE_DATA_PASIEN]: saveDataPasien
 })
