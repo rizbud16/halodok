@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Icon, Container, Header,Left, Right, Body, Title, Content, Text, Form, Item, Input, Label, Button } from 'native-base'
+import { Icon, Container, Header,Left, Right, Body, Title, Content, Text, Form, Item, Input, Picker, Label, Button } from 'native-base'
 import { connect } from 'react-redux'
 import FormActions from '../Redux/FormRedux'
 
@@ -7,6 +7,10 @@ import FormActions from '../Redux/FormRedux'
 import styles from './Styles/FormStyle'
 
 class FormScreen extends Component {
+  static navigationOptions = {
+    header: null
+  }
+
   constructor (props) {
     super(props)
 
@@ -14,21 +18,28 @@ class FormScreen extends Component {
       name: '',
       email: '',
       age: null,
+      address: '',
       phone: '',
-      bpjs: false
+      bpjs: ""
     }
   }
 
   onSubmit = async() => {
-    const { name, email, age, phone, bpjs } = this.state
+    const { name, email, age, address, phone, bpjs } = this.state
 
-    if(name == '' || email == '' || !age || phone == '' ) {
+    if(name == '' || email == '' || !age || address == '' || phone == '') {
       alert('Isi semua')
     } else {
       await this.props.saveDataPasien({ ...this.state })
 
       alert('Sucess!')
+
+      this.props.navigation.navigate('DataPasienScreen')
     }
+  }
+
+  onBpjs() {
+    this.setState({ bpjs: isi })
   }
 
   render () {
@@ -42,29 +53,40 @@ class FormScreen extends Component {
           <Right style={{ flex: 1 }} />
         </Header>
         <Content>
-          <Form>
+          <Form style={{ marginRight: 10}}>
             <Item floatingLabel>
-              <Label style={{ marginLeft: 10 }}>Nama Lengkap</Label>
-              <Input 
-                onChangeText={(name) => this.setState({ name })} 
+              <Label>Nama Lengkap</Label>
+              <Input onChangeText={(name) => this.setState({ name })} 
               />
             </Item>
             <Item floatingLabel>
-              <Icon name='person' />
-              <Label style={{ marginLeft: 10 }}>Email</Label>
+              <Label>Email</Label>
               <Input keyboardType={"email-address"} onChangeText={(email) => this.setState({ email })} />
             </Item>
             <Item floatingLabel>
-              <Icon name='key' />
-              <Label style={{ marginLeft: 10 }}>Umur</Label>
+              <Label>Umur</Label>
               <Input keyboardType={"number-pad"} onChangeText={(age) => this.setState({ age })} />
             </Item>
             <Item floatingLabel>
-              <Icon name='key' />
-              <Label style={{ marginLeft: 10 }}>No. HP</Label>
+              <Label>Alamat</Label>
+              <Input onChangeText={(address) => this.setState({ address })} />
+            </Item>
+            <Item floatingLabel>
+              <Label>No. HP</Label>
               <Input keyboardType={"phone-pad"} onChangeText={(phone) => this.setState({ phone })} />
             </Item>
+              <Label style={{ marginLeft: 15, marginTop: 15 }}>BPJS</Label>
+            <Item picker style={{ marginLeft: 10 }}>
+              <Picker
+                selectedValue={this.state.bpjs}
+                onChangeValue={(isi) => this.onBpjs(isi)}
+                >
+                <Picker.Item label="Ya" value="true" />
+                <Picker.Item label="Tidak" value="false" />
+            </Picker>
+            </Item>
           </Form>
+          <Text>{this.state.bpjs}</Text>
           <Button block style={{ margin: 15 }} onPress={() => this.onSubmit()}>
             <Text>SIGN UP</Text>
           </Button>

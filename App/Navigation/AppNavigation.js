@@ -1,13 +1,17 @@
-import { createStackNavigator, createAppContainer } from 'react-navigation'
+import { createSwitchNavigator, createAppContainer, createStackNavigator } from 'react-navigation'
+import DetailPasien from '../Containers/DetailPasien'
+import DataPasienScreen from '../Containers/DataPasienScreen'
 import FormScreen from '../Containers/Form'
-import LaunchScreen from '../Containers/LaunchScreen'
 
 import styles from './Styles/NavigationStyles'
 
+/*
 // Manifest of possible screens
-const PrimaryNav = createStackNavigator({
+const PrimaryNav = createSwitchNavigator({
+  DetailPasien: { screen: DetailPasien },
+  DataPasienScreen: { screen: DataPasienScreen },
   FormScreen: { screen: FormScreen },
-  LaunchScreen: { screen: LaunchScreen }
+  DataPasienScreen: { screen: DataPasienScreen }
 }, {
   // Default config for all screens
   headerMode: 'none',
@@ -15,6 +19,17 @@ const PrimaryNav = createStackNavigator({
   navigationOptions: {
     headerStyle: styles.header
   }
+})
+*/
+
+const AppStack = createStackNavigator({  DataPasienScreen: DataPasienScreen, DetailPasien: DetailPasien })
+const FormStack = createStackNavigator({ FormScreen: FormScreen })
+
+const PrimaryNav = createSwitchNavigator({
+  App: AppStack,
+  Form: FormStack
+}, {
+  initialRouteName: 'Form'
 })
 
 export default createAppContainer(PrimaryNav)
