@@ -25,14 +25,19 @@ class DataPasienScreen extends Component {
       <Container>
         <Header />
         <Content>
+          <Card>
+          <CardItem button onPress={() => this.props.navigation.navigate('Form')}>
+                <Body>
+                  <Text>New Pasien</Text>
+                </Body>
+              </CardItem>
+          </Card>
             {pasien.map((item, index) => (
-          <Card key={index} style={{margin: 10}}>
-              <CardItem>
+          <Card key={index} >
+              <CardItem button onPress={() => this.props.navigation.navigate('Detail', { index, item })} style={{margin: 10}}>
                 <Body>
                 <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.name}</Text>
                 <Text>{item.age} tahun</Text>
-                <Text>{item.email}{"\n"}{item.phone}</Text>
-                {item.bpjs === 'true' ? <Text>Pasien BPJS</Text> : <Text>Bukan Pasien BPJS</Text>}
                 </Body>
                 <Right>
                   <Icon name="arrow-dropright" />

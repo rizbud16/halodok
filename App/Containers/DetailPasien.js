@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-import { ScrollView, Text } from 'react-native'
+import { View, Text } from 'react-native'
 import { connect } from 'react-redux'
+import FormRedux from '../Redux/FormRedux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
 import styles from './Styles/DetailPasienStyle'
+import { Item } from 'native-base';
 
 class DetailPasien extends Component {
   // constructor (props) {
@@ -14,16 +16,27 @@ class DetailPasien extends Component {
   // }
 
   render () {
+
+    const { navigation } = this.props
+    const item = navigation.getParam('item', 'no-data')
+    const index = navigation.getParam('index', 'no-data')
+
+    const { pasien } = this.props.form
+
+    const { name, email, age, address, phone, bpjs } = pasien[index]
+
     return (
-      <ScrollView style={styles.container}>
+      <View>
         <Text>DetailPasien Container</Text>
-      </ScrollView>
+        <Text>{name}</Text>
+      </View>
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
+    form: state.form
   }
 }
 

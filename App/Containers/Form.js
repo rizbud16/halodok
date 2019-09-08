@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Icon, Container, Header,Left, Right, Body, Title, Content, Text, Form, Item, Input, Picker, Label, Button } from 'native-base'
+import { Icon, Container, Header,Left, Right, Body, Title, Content, Text, Form, Item, Input, Label, Button } from 'native-base'
 import { connect } from 'react-redux'
+import { Picker } from 'react-native'
 import FormActions from '../Redux/FormRedux'
 
 // Styles
@@ -20,7 +21,7 @@ class FormScreen extends Component {
       age: null,
       address: '',
       phone: '',
-      bpjs: ""
+      bpjs: ''
     }
   }
 
@@ -39,10 +40,17 @@ class FormScreen extends Component {
   }
 
   onBpjs() {
-    this.setState({ bpjs: isi })
+    if(isi === 'true') {
+      this.setState({ bpjs: 'true'})
+    } else {
+      this.setState({ bpjs: 'false'})
+    }
+    console.log(this.state.bpjs)
   }
 
   render () {
+
+    console.log(this.state.bpjs)
     return (
       <Container>
         <Header>
@@ -76,17 +84,15 @@ class FormScreen extends Component {
               <Input keyboardType={"phone-pad"} onChangeText={(phone) => this.setState({ phone })} />
             </Item>
               <Label style={{ marginLeft: 15, marginTop: 15 }}>BPJS</Label>
-            <Item picker style={{ marginLeft: 10 }}>
               <Picker
+                style={{marginLeft: 10}}
                 selectedValue={this.state.bpjs}
-                onChangeValue={(isi) => this.onBpjs(isi)}
+                onValueChange={(isi) => this.setState({ bpjs: isi })}
                 >
                 <Picker.Item label="Ya" value="true" />
                 <Picker.Item label="Tidak" value="false" />
             </Picker>
-            </Item>
           </Form>
-          <Text>{this.state.bpjs}</Text>
           <Button block style={{ margin: 15 }} onPress={() => this.onSubmit()}>
             <Text>SIGN UP</Text>
           </Button>

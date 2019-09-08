@@ -22,14 +22,12 @@ const PrimaryNav = createSwitchNavigator({
 })
 */
 
-const AppStack = createStackNavigator({  DataPasienScreen: DataPasienScreen, DetailPasien: DetailPasien })
-const FormStack = createStackNavigator({ FormScreen: FormScreen })
-
-const PrimaryNav = createSwitchNavigator({
-  App: AppStack,
-  Form: FormStack
+const PrimaryNav = createStackNavigator({
+  List: { screen: DataPasienScreen },
+  Form: { screen: FormScreen },
+  Detail: { screen: DetailPasien }
 }, {
-  initialRouteName: 'Form'
+  initialRouteName: 'List'
 })
 
 export default createAppContainer(PrimaryNav)
