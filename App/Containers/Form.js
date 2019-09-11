@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Icon, Container, Header,Left, Right, Body, Title, Content, Text, Form, Item, Input, Label, Button } from 'native-base'
+import { Icon, Container, Header, Left, Right, Body, Title, Content, Text, Form, Item, Input, Label, Button } from 'native-base'
 import { connect } from 'react-redux'
-import { Picker } from 'react-native'
+import { Picker, ToastAndroid, TouchableOpacity } from 'react-native'
 import FormActions from '../Redux/FormRedux'
 
 // Styles
@@ -19,33 +19,25 @@ class FormScreen extends Component {
       name: '',
       email: '',
       age: null,
+      gender: 'Laki-Laki',
       address: '',
       phone: '',
-      bpjs: ''
+      bpjs: 'false'
     }
   }
 
   onSubmit = async() => {
-    const { name, email, age, address, phone, bpjs } = this.state
+    const { name, email, age, gender, address, phone, bpjs } = this.state
 
     if(name == '' || email == '' || !age || address == '' || phone == '') {
       alert('Isi semua')
     } else {
       await this.props.saveDataPasien({ ...this.state })
 
-      alert('Sucess!')
+      ToastAndroid.show('Sukses menambahkan pasien', ToastAndroid.SHORT)
 
-      this.props.navigation.navigate('DataPasienScreen')
+      this.props.navigation.goBack(null)
     }
-  }
-
-  onBpjs() {
-    if(isi === 'true') {
-      this.setState({ bpjs: 'true'})
-    } else {
-      this.setState({ bpjs: 'false'})
-    }
-    console.log(this.state.bpjs)
   }
 
   render () {
@@ -54,9 +46,13 @@ class FormScreen extends Component {
     return (
       <Container>
         <Header>
-          <Left style={{ flex: 1 }} />
+          <Left style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => this.props.navigation.goBack(null)}>
+              <Icon name="close" color="#ffffff" />
+            </TouchableOpacity>
+          </Left>
           <Body style={{ flex: 1, alignSelf: 'center' }}>
-            <Title>Sign Up First</Title>
+            <Title>Tambah Pasien</Title>
           </Body>
           <Right style={{ flex: 1 }} />
         </Header>
@@ -67,17 +63,26 @@ class FormScreen extends Component {
               <Input onChangeText={(name) => this.setState({ name })} 
               />
             </Item>
+              <Label style={{ marginLeft: 15, marginTop: 15 }}>Jenis Kelamin</Label>
+              <Picker
+                style={{marginLeft: 10, marginBottom: 15}}
+                selectedValue={this.state.gender}
+                onValueChange={(jk) => this.setState({ gender: jk })}
+                >
+                <Picker.Item label="Laki-Laki" value="Laki-Laki" />
+                <Picker.Item label="Perempuan" value="Perempuan" />
+            </Picker>
             <Item floatingLabel>
-              <Label>Email</Label>
-              <Input keyboardType={"email-address"} onChangeText={(email) => this.setState({ email })} />
-            </Item>
-            <Item floatingLabel>
-              <Label>Umur</Label>
+              <Label>Usia</Label>
               <Input keyboardType={"number-pad"} onChangeText={(age) => this.setState({ age })} />
             </Item>
             <Item floatingLabel>
               <Label>Alamat</Label>
               <Input onChangeText={(address) => this.setState({ address })} />
+            </Item>
+            <Item floatingLabel>
+              <Label>Email</Label>
+              <Input autoCapitalize={"none"} keyboardType={"email-address"} onChangeText={(email) => this.setState({ email })} />
             </Item>
             <Item floatingLabel>
               <Label>No. HP</Label>
@@ -94,7 +99,7 @@ class FormScreen extends Component {
             </Picker>
           </Form>
           <Button block style={{ margin: 15 }} onPress={() => this.onSubmit()}>
-            <Text>SIGN UP</Text>
+            <Text>TAMBAH</Text>
           </Button>
         </Content>
       </Container>

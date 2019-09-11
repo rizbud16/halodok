@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text } from 'react-native'
+import { Container, Body, Content, Text, Card, CardItem } from 'native-base'
+import { Images } from '../Themes'
+import { Image } from 'react-native'
 import { connect } from 'react-redux'
 import FormRedux from '../Redux/FormRedux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
@@ -7,29 +9,36 @@ import FormRedux from '../Redux/FormRedux'
 
 // Styles
 import styles from './Styles/DetailPasienStyle'
-import { Item } from 'native-base';
 
 class DetailPasien extends Component {
-  // constructor (props) {
-  //   super(props)
-  //   this.state = {}
-  // }
+  static navigationOptions = {
+     title: 'Detail Pasien'
+  }
 
   render () {
 
     const { navigation } = this.props
-    const item = navigation.getParam('item', 'no-data')
     const index = navigation.getParam('index', 'no-data')
 
     const { pasien } = this.props.form
 
-    const { name, email, age, address, phone, bpjs } = pasien[index]
+    const { name, email, age, gender, address, phone, bpjs } = pasien[index]
 
     return (
-      <View>
-        <Text>DetailPasien Container</Text>
-        <Text>{name}</Text>
-      </View>
+      <Container>
+        <Content>
+          <Card>
+            <CardItem>
+              <Body>
+                {gender === 'Perempuan' ? <Image style={{ alignSelf: 'center' }} source={Images.female} /> : <Image style={{ alignSelf: 'center' }} source={Images.male} />}
+                <Text>Nama Pasien : {name}{"\n"}Jenis Kelamin : {gender}{"\n"}Usia : {age}</Text>
+                <Text>Alamat : {address}{"\n"}No. HP : {phone}{"\n"}Email : {email}</Text>
+                {bpjs === 'true' ? <Text>Pasien BPJS</Text> : <Text>Bukan Pasien BPJS</Text>}
+              </Body>
+            </CardItem>
+          </Card>
+        </Content>
+      </Container>
     )
   }
 }

@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Container, Body, Header, Content, Text, Card, CardItem, Right, Icon } from 'native-base'
+import { Container, Body, Header, Left, Title, Content, Text, Card, CardItem, Right, Icon } from 'native-base'
 import { connect } from 'react-redux'
 // Add Actions - replace 'Your' with whatever your reducer is called :)
 // import YourActions from '../Redux/YourRedux'
 
 // Styles
 import styles from './Styles/DataPasienScreenStyle'
+import { TouchableOpacity } from 'react-native';
 
 class DataPasienScreen extends Component {
   static navigationOptions = {
@@ -23,7 +24,17 @@ class DataPasienScreen extends Component {
 
     return (
       <Container>
-        <Header />
+        <Header>
+          <Left style={{ flex: 1}} />
+          <Body style={{ flex: 1, alignSelf: 'center' }}>
+            <Title>Data Pasien</Title>
+          </Body>
+          <Right style={{ flex: 1, alignSelf: 'center' }}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Form')}>
+              <Icon name="add" color="#ffffff" />
+            </TouchableOpacity>
+          </Right>
+        </Header>
         <Content>
           <Card>
           <CardItem button onPress={() => this.props.navigation.navigate('Form')}>
@@ -34,10 +45,10 @@ class DataPasienScreen extends Component {
           </Card>
             {pasien.map((item, index) => (
           <Card key={index} >
-              <CardItem button onPress={() => this.props.navigation.navigate('Detail', { index, item })} style={{margin: 10}}>
+              <CardItem button onPress={() => this.props.navigation.navigate('Detail', { item, index })} style={{margin: 10}}>
                 <Body>
                 <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.name}</Text>
-                <Text>{item.age} tahun</Text>
+                <Text>{item.gender}, {item.age} tahun</Text>
                 </Body>
                 <Right>
                   <Icon name="arrow-dropright" />
